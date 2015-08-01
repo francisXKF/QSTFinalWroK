@@ -1,7 +1,0 @@
-package com.qst.francis.dao;
-
-import com.qst.francis.pojo.Info;
-
-public interface InfoDao {
-	public boolean insertInfo(Info info);
-}
