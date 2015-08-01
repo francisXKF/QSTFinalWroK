@@ -1,0 +1,7 @@
+package com.qst.francis.pojo;
+
+public class Info {
+	private int info_id;
+	private int info_type_id;
+	
+}

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Welcome</title>
+<script>
+	
+</script>
+</head>
+<body>
+<a href="JSP/index.jsp">点击此处访问</a>
+</body>
+</html>

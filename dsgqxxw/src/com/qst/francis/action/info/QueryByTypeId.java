@@ -1,0 +1,59 @@
+package com.qst.francis.action.info;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.qst.francis.dao.InfoDao;
+import com.qst.francis.dao.InfoTypeDao;
+import com.qst.francis.impl.InfoDaoImpl;
+import com.qst.francis.impl.InfoTypeDaoImpl;
+import com.qst.francis.pojo.Info;
+import com.qst.francis.util.StringToInteger;
+
+@WebServlet("/queryByTypeId")
+public class QueryByTypeId extends HttpServlet{
+
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		
+		PrintWriter out = resp.getWriter();
+		String infoTypeIdStr = (String)req.getParameter("infoTypeId");
+		
+		InfoDao infoDao = new InfoDaoImpl();
+		InfoTypeDao infoTypeDao = new InfoTypeDaoImpl();
+		
+		Integer infoTypeId = new StringToInteger().change(infoTypeIdStr);
+		String infoTypeName = "";
+		
+		if(infoTypeId == null){
+			out.print("<html><head><meta charset='utf-8'><script>function error_fun(){alert(删除错误);}</script></head>"
+					+ "<body onload='error_fun()'>请确保输入的为数字</body></html>");
+			resp.sendRedirect("JSP/admin_operate_user.jsp");
+		}
+		else{
+			infoTypeName = infoTypeDao.queryById(infoTypeId);
+		}
+
+		Info freeInfo = infoDao.queryFreeByTypeId(infoTypeIdStr);
+		Info payInfo = infoDao.queryPayByTypeId(infoTypeIdStr);
+		req.setAttribute("freeInfo", freeInfo);
+		req.setAttribute("payInfo", payInfo);
+		req.setAttribute("infoTypeName", infoTypeName);
+		req.getRequestDispatcher("JSP/index_info_content.jsp").forward(req, resp);
+	}
+
+	@Override
+	public void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(req, resp);
+	}
+
+}

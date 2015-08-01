@@ -1,0 +1,73 @@
+body{
+    font-size: 12px;
+    text-align: center;
+    background-color: #eef;
+}
+.container{
+    width: 65%;
+    height: 100%;
+    position: absolute;
+    left:20%;
+}
+.top{
+    background-image: url(../images/admin_top.jpg);
+    background-repeat: no-repeat;
+    background-size:auto;
+    position: relative;
+    height: 98px;
+    width: 100%;
+}
+.admin-exit{
+    position: absolute;
+    right: 0px;
+    bottom: 10px;
+}
+.admin-index{
+    position: absolute;
+    right: 90px;
+    bottom: 10px;
+}
+.div-body{
+    height: inherit;
+    background-color: rgba(255,255,255,1);
+}
+.div-body-left{
+    margin-left: 6px;
+    float: left;
+    width: 64%;
+}
+.div-body-right{
+    float: right;
+    width: 35%;
+}
+.table-body{
+    width: 100%;
+    border-collapse:collapse;
+}
+.select-jobinfo{
+    background-color: #ccc;
+    margin-top: 5px;
+}
+.div-right-top{
+    border: 1px solid #ccc;
+}
+ul{
+    list-style: square inside none;
+    color: #0e3295;
+}
+.li-top-right{
+    background-color: #eae7e7;
+    color: #0e3295;
+    text-align: left;
+    height: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+#tr-th-body{
+    background-color: #eae7e7;
+}
+iframe{
+    width: 100%;
+    height: 560px;
+    border: 0px;
+}

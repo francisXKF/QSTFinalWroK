@@ -1,0 +1,122 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%@ page import="com.qst.francis.pojo.Info" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>ADMIN</title>
+        <style type="text/css">
+            .mouseon{
+                color: #f73;
+                font-size: 1em;
+            }
+            .mouseout{
+                color: #000;
+                font-size: 1em;
+            }
+            .table-body{
+                width: 100%;
+                border-collapse:collapse;
+            }
+            #tr-th-body{
+                background-color: #eae7e7;
+            }
+            .one-bg{
+                background-color: #fff;
+                text-align: center;
+            }
+            .two-bg{
+                background-color: #ccc;
+                text-align: center;
+            }
+            a{
+            	text-decoration: none;
+            }
+        </style>
+        <script>
+        function changeSpan(){
+            var all_div=document.getElementsByTagName("span");
+            for(i=0; i<all_div.length; i++){
+                all_div[i].onmouseover=function(){
+                    this.className="mouseon";
+                }
+                all_div[i].onmouseout=function(){
+                    this.className="mouseout";
+                }
+            }
+        }
+
+        function changeTr(){
+        	var all_div=document.getElementsByTagName("tr");
+        	for(i=0; i<all_div.length; i++){
+	            if(i % 2 == 0){
+	            	all_div[i].className="two-bg";
+	            }
+	            else{
+	                all_div[i].className="one-bg";
+	            }
+        	}
+        }
+        function change(){
+        	changeSpan();
+        	changeTr();
+        }
+        </script>
+    </head>
+    <body onload="change()">
+    	<%
+    		int nowpage = (Integer)request.getAttribute("start");
+			int info_cnt = nowpage * (Integer)request.getAttribute("step") + 1;
+    		int prepage = nowpage - 1;
+    		int nextpage = nowpage + 1;
+    		String basePath = "/dsgqxxw/queryStateInfoAction?";
+    		String infoStateUrl = (String)request.getAttribute("infoStateUrl");
+    		String infoPreUrl = basePath + infoStateUrl + "&start=" + prepage;
+    		String infoNextUrl = basePath + infoStateUrl + "&start=" + nextpage;
+    		String infoNowUrl = infoStateUrl + "&start=" + nowpage;
+    		String checkurl = "/dsgqxxw/payInfoAction?infoid=";
+    		
+    	%>
+        <p>审核[${infoTypeName }]</p>
+        <table class="table-body">
+            <tr id="tr-th-body">
+                <th>序号</th>
+                <th>信息ID</th>
+                <th>信息标题</th>
+                <th>发布时间</th>
+                <th>付费</th>
+                <th>审核</th>
+                <th>操作</th>
+            </tr>
+            <c:forEach items = "${queryInfoStateList }" var = "info">
+            
+	            <tr>
+	                <td><%=info_cnt++ %></td>
+	                <td>${info.getInfo_id() }</td>
+	                <td>
+	                	<a href="/dsgqxxw/queryIdCheckedAction?infoId=${info.info_id }">
+	                		${info.getInfo_title() }</td>
+	                	</a>
+	                <td><fmt:formatDate value= "${info.getInfo_date() }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+	                <td><c:if test="${info.getInfo_pay_state()==1}">是</c:if><c:if test="${info.getInfo_pay_state()==0 }">否</c:if></td>
+	                <td><c:if test="${info.getInfo_check_state()==1}">是</c:if><c:if test="${info.getInfo_check_state()==0 }">否</c:if></td>
+	                <td>
+	                	<a href="/dsgqxxw/checkInfoAction?<%=infoNowUrl %>&infoid=${info.getInfo_id() }">
+	                    	<span>√审核</span>
+	                    </a>
+	                    <a href="/dsgqxxw/deleteInfoAction?<%=infoNowUrl %>&infoid=${info.getInfo_id() }">
+	                    	<span>×删除</span>
+	                    </a>
+	                </td>
+	            </tr>
+            </c:forEach>
+            <tr>
+                <a href=<%=infoPreUrl %> target="content_body">上一页</a>|<a href=<%=infoNextUrl %> target="content_body">下一页</a>
+            </tr>
+        </table>
+    </body>
+</html>
