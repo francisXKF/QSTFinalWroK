@@ -1,0 +1,117 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%@ page import="com.qst.francis.pojo.Info" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>admin_operate_user</title>
+        <style type="text/css">
+            .table-body{
+                width: 100%;
+                border-collapse:collapse;
+            }
+            #tr-th-body{
+                background-color: #eae7e7;
+            }
+            td, th{
+                width: 25%;
+                text-align: center;
+            }
+            .mouseon{
+                color: #f73;
+                font-size: 1em;
+            }
+            .mouseout{
+                color: #000;
+                font-size: 1em;
+            }
+            .one-bg{
+                background-color: #fff;
+                text-align: center;
+            }
+            .two-bg{
+                background-color: #ccc;
+                text-align: center;
+            }
+            a{
+            	text-decoration: none;
+            }
+        </style>
+        
+        <script>
+            function changeSpan(){
+                var all_div=document.getElementsByTagName("span");
+                for(i=0; i<all_div.length; i++){
+                    all_div[i].onmouseover=function(){
+                        this.className="mouseon";
+                    }
+                    all_div[i].onmouseout=function(){
+                        this.className="mouseout";
+                    }
+                }
+            }
+
+            function changeTr(){
+            	var all_div=document.getElementsByTagName("tr");
+            	for(i=0; i<all_div.length; i++){
+    	            if(i % 2 == 0){
+    	            	all_div[i].className="two-bg";
+    	            }
+    	            else{
+    	                all_div[i].className="one-bg";
+    	            }
+            	}
+            }
+            function change(){
+            	changeSpan();
+            	changeTr();
+            }
+            
+        </script>
+    </head>
+    <body onload="change()">
+    	<%
+    		int nowpage = (Integer)request.getAttribute("userStart");
+			int user_cnt = nowpage * (Integer)request.getAttribute("userStep") + 1;
+    		int user_id = (Integer)request.getAttribute("userId");
+			int prepage = nowpage - 1;
+    		int nextpage = nowpage + 1;
+    		String basePath = "/dsgqxxw/queryIdUserAction?";
+    		String userPreUrl = basePath + "enteruserid=" + user_id + "&start=" + prepage;
+    		String userNextUrl = basePath + "enteruserid=" + user_id + "&start=" + nextpage;
+    		String userNowUrl = "enteruserid=" + user_id + "&start=" + nowpage;
+    	%>
+        <p>用户信息</p>
+        <table class="table-body">
+            <tr id="tr-th-body">
+                <th>序号</th>
+                <th>用户ID</th>
+                <th>用户姓名</th>
+                <th>操作</th>
+            </tr>
+            <c:forEach items="${queryIdUserList }" var="user">
+	            <tr>
+	                <td><%=user_cnt++ %></td>
+	                <td>${user.getUser_id() }</td>
+	                <td>${user.getUser_name() }</td>
+	                <td>
+	                	<a href="/dsgqxxw/JSP/admin_modify_user.jsp?&userid=${user.user_id }&username=${user.getUser_name()}">
+	                    	<span>√修改</span>
+	                    </a>
+	                    <c:if test="${user.user_type_id >= 2 }">
+	                    <a href="/dsgqxxw/deleteIdUserAction?<%=userNowUrl %>&userid=${user.getUser_id() }">
+	                    	<span>×删除</span>
+	                    </a>
+	                    </c:if>
+	                </td>
+	            </tr>
+            </c:forEach>
+            <tr>
+                <a href=<%=userPreUrl %> target="content_body">上一页</a>|<a href=<%=userNextUrl %> target="content_body">下一页</a>
+            </tr>
+        </table>
+    </body>
+</html>

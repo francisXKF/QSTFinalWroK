@@ -1,0 +1,120 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%@ page import="com.qst.francis.pojo.User" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>search answer</title>
+        <style>
+            .searchAnswer-container{
+                width: 90%;
+                height: 100%;
+                border: 1px solid #fff;
+            }
+            #searchAnswer-table{
+                width: 100%;
+                border-collapse:collapse;
+            }
+            .one-bg{
+                background-color: #ccc;
+                text-align: center;
+            }
+            .two-bg{
+                background-color: #fff;
+                text-align: center;
+            }
+            .align-left{
+                text-align: left;
+            }
+            #searchAnswer-table th{
+                background-color: #eee;
+            }
+            .float-left{
+                float: left;
+            }
+            .float-right{
+                float: right;
+            }
+        </style>
+        <script>
+            var indexNote = 1;
+            var rowlength;
+            
+            function insertRow(tableID){
+//                外部遍历所有数据记录，将 每个数据动态写入html
+                var objTable = document.getElementById(tableID);
+                indexNote = objTable.rows.length;
+                rowlength = objTable.rows[0].cells.length;
+                
+                var objTableRow = objTable.insertRow(indexNote);
+                if(indexNote % 2 == 0){
+                    objTableRow.className = "one-bg";
+                }
+                else{
+                    objTableRow.className= "two-bg";
+                }
+                var i = 0;
+                var objTableD = objTableRow.insertCell(i);
+                objTableD.innerHTML=indexNote;
+                for(var i = 1; i < rowlength; i++){
+                    objTableD = objTableRow.insertCell(i);
+                    objTableD.innerHTML=i;
+                    if(i == 3){
+                        objTableD.className = "align-left";
+                    }
+                    
+                }
+            }
+            function change2(){
+            var all_div=document.getElementsByTagName("tr");
+            for(i=0; i<all_div.length; i++){
+                if(i % 2 == 0){
+                	all_div[i].className="two-bg";
+                }
+                else{
+                    all_div[i].className="one-bg";
+                }
+            }
+        }
+        </script>
+    </head>
+    <body>
+    	<%
+    		int cnt = 1;
+    	%>
+        <div class="searchAnswer-container">
+            <table id="searchAnswer-table" >
+                <tr>
+                    <th>序号</th>
+                    <th>信息类别</th>
+                    <th>ID值</th>
+                    <th>信息标题</th>
+                    <th>发布时间</th>
+                    <th>联系人</th>
+                    <th>E-mail</th>
+                </tr>
+                <c:forEach items="${queryConditionList }" var="info">
+	                <tr>
+	                	<td><%=cnt++ %></td>
+	                	<td>还没写类别</td>
+	                	<td>${info.info_id }</td>
+	                	<td>${info.info_title }</td>
+	                	<td>${info.info_date }</td>
+	                	<td>${info.info_linkman }</td>
+	                	<td>${info.info_email }</td>
+	                </tr>
+                </c:forEach>
+            </table>
+            <!--   测试table插入 功能         -->
+            <input type="button" onclick="insertRow('searchAnswer-table')" value="insert"><br>
+            <div class="float-left">每页显示：7/23条记录！当前页：1/3页</div>
+            <div class="float-right">
+                <a href="#">下一页</a>
+                <a href="#">尾页</a>
+            </div>
+        </div>
+    </body>
+</html>
